@@ -1,0 +1,104 @@
+1º Vamos usar a IDE intellij
+
+vamos criar um novo projeto do tipo MAVEN, apenas selecionar maven e next..
+
+ao usar o maven, podemos usar o mavenrepository onde o mesmo contêm diversas libs para colocar no projeto
+ao copiar os dados da lib, basta adicionar no pom.xml
+
+ao abrir o projeto e caso o mesmo tenha erros, basta clicar na coluna maven no canto direito superior e fazer um refresh 
+
+
+2º Configurando projeto para suportar o cucumber
+
+*adicionando plugins: vá na opção settings e acesse os plugins
+*procure o plugin: cucumber for java instale e reinicie a IDE.
+*adicione o template do cucumber para ficar disponivel quando clicar em new para criar classes,pacotes e etc
+*clique com botão direito na pasta do projeto > new > Edit file template > crie um novo no botão mais (+)
+*defina o nome do tipo: cucumber feature file e defina o nome como feature, clique em aply e em seguida ok.
+*com isso é possivel criar uma feature do tipo cucumber
+
+3º Configurando MAVEN para windows
+
+*acesse o site do apache maven: https://maven.apache.org/download.cgi
+*baixe o Binary zip archive:	apache-maven-3.9.6-bin.zip
+*descompacte a pasta e coloque na pasta raiz do windos C:
+*entre na pasta e copie o caminho da pasta apache
+*acesse as variaveis de ambiente do windows clique em novo na parte de variaveis do usuario
+*defina o nome M2_HOME e no valor coloque o caminho do apache
+*na variavel path, clique em editar, crie uma nova linha e coloque: C:\apache-maven-3.9.6\bin e clique em ok
+*abra o cmd e digite mvn -version para confirmar que o maven está rodando com sucesso
+
+4º Adicionando dependencias necessárias em nosso pom.xml
+*abra o pom.xml e adicione as dependencias:
+ <groupId>org.example</groupId>
+    <artifactId>primeiroprojetojavaappium</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>primeiroprojetojavaappium</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project>UTF-8</project>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        
+    </dependencies>
+
+*por qual motivo usar o junit ?
+R: os comandos de testes que vamos usar vai rodar encima do junit: como comandos de gerar relatorios.
+
+*por qual motivo usar o appium ?
+R: é o servidor que vai fazer a ponte entre o appium, codigo e o dispositivo movel
+
+*podemos pegar essas dependencias também através do maven repository
+https://mvnrepository.com/
+dentro do repositorio vc pega as dependencias de acordo com o tipo de projeto, seja maven, gradel e etc
+
+ 
+5º Organizando pastas do projeto
+*deletar pasta main caso não tenha um codigo de desenvolvimento android (aplicativo)
+*criar duas pastas dentro da pasta test > java sendo a referencia as propriedades groupId e artifactId (org.example.primeiroprojetojavaappium)
+
+*Na pasta org.example.primeiroprojetojavaappium vamos criar as classes, contendo os metodos de teste, por exemplo a classe ScreenLogin
+
+*Na pasta org.example.primeiroprojetojavaappium cria a classe de teste que vai conter os cenários de login por exemplo: TesteLogin
+
+*Crie na raiz do projeto uma pasta apps que vai conter a apk ou instalador dos aplicativos que vamos testar
+
+6º Inspecionando elementos e mapeando na classe
+na classe ScreenLogin vamos criar o metodo:
+
+public ScreenLogin(AppiumDriver<RemoteWebElement> driver){
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+Esse metodo é responsavel por identificar quais são os elementos e quais são as plataformas
+como estamos usando o Appium, passamos o driver do Appium no metodo
+
+*Posterior vamos incluir o:
+@AndroidFindBy(id="")
+//passando esse @AndroidFindBy(id="") eu quero dizer que se for android, vai usar o id informado nessa tag
+private RemoteWebElement campoemail;
+//esse private acima indica que estamos identificando o campo email
+//toda vez que eu chamar o campo email, se for android usa o id informado na tag @AndroidFindBy(id="")
+
+resumindo: eu pego o identificador e abaixo eu dou um nome pra ele no caso dei o nome para o identificador de campoemail
+
+
+
